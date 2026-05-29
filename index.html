@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Handi Eka Prasetya — Creative Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:#0b0f2a;--navy2:#141a3a;--navy3:#1e2650;
+      --gold:#c9a84c;--goldb:#e8c97a;
+      --cream:#f7f4ed;--white:#ffffff;--dark:#1a1c2e;--muted:#6b7080;--border:rgba(0,0,0,0.07);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden}
+
+    /* CURSOR */
+    @media(pointer:fine){
+      body{cursor:none}
+      .cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+      .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .12s ease,top .12s ease,width .2s,height .2s;opacity:.5}
+    }
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,box-shadow .4s}
+    nav.scrolled{background:rgba(11,15,42,.93);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(201,168,76,.15)}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:20px;color:var(--white);letter-spacing:1px}
+    .nav-logo span{color:var(--gold)}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s;position:relative}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--gold);transition:width .25s}
+    .nav-links a:hover{color:var(--goldb)}
+    .nav-links a:hover::after{width:100%}
+    .nav-burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+    .nav-burger span{display:block;width:22px;height:1.5px;background:var(--white);border-radius:2px;transition:transform .3s,opacity .3s}
+    .nav-burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .nav-burger.open span:nth-child(2){opacity:0}
+    .nav-burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+    /* MOBILE MENU */
+    .mobile-menu{display:none;position:fixed;inset:0;background:var(--navy);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{font-family:'Playfair Display',serif;font-size:32px;color:var(--white);text-decoration:none;opacity:0;transform:translateY(20px);transition:color .2s}
+    .mobile-menu.open a{animation:mobileIn .4s ease forwards}
+    .mobile-menu.open a:nth-child(1){animation-delay:.05s}
+    .mobile-menu.open a:nth-child(2){animation-delay:.10s}
+    .mobile-menu.open a:nth-child(3){animation-delay:.15s}
+    .mobile-menu.open a:nth-child(4){animation-delay:.20s}
+    .mobile-menu.open a:nth-child(5){animation-delay:.25s}
+    .mobile-menu a:hover{color:var(--gold)}
+    @keyframes mobileIn{to{opacity:1;transform:translateY(0)}}
+
+    /* HERO */
+    #hero{min-height:100vh;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 1.5rem 5rem;position:relative;overflow:hidden}
+    .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.04) 1px,transparent 1px);background-size:60px 60px}
+    .hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+    .orb1{width:400px;height:400px;top:-80px;right:-80px;background:rgba(201,168,76,.07)}
+    .orb2{width:300px;height:300px;bottom:-60px;left:-60px;background:rgba(30,38,80,.8)}
+    .hero-content{position:relative;z-index:2;max-width:640px}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(201,168,76,.3);border-radius:100px;padding:6px 16px;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .2s ease forwards}
+    .hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+    .hero-name{font-family:'Playfair Display',serif;font-size:clamp(38px,9vw,76px);font-weight:900;color:var(--white);line-height:1.05;margin-bottom:1rem;opacity:0;animation:fadeUp .8s .35s ease forwards}
+    .hero-name .gold{color:var(--gold)}
+    .hero-sub{font-size:clamp(13px,3vw,15px);font-weight:300;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .5s ease forwards}
+    .hero-contacts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .65s ease forwards}
+    .hero-contacts a{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.2);border-radius:100px;padding:9px 18px;font-size:13px;color:rgba(255,255,255,.8);text-decoration:none;transition:all .25s}
+    .hero-contacts a:hover{background:rgba(201,168,76,.12);border-color:var(--gold);color:var(--goldb);transform:translateY(-2px)}
+
+    /* FLOATING WA */
+    .float-wa{position:fixed;bottom:24px;right:24px;z-index:200;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s,box-shadow .2s;animation:fadeUp .8s 1.2s ease both}
+    .float-wa:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.55)}
+    .float-wa svg{width:28px;height:28px;fill:#fff}
+    .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;animation:fadeUp 1s 1s ease forwards}
+    .scroll-hint span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+    .scroll-arrow{width:22px;height:22px;border-right:1.5px solid rgba(201,168,76,.5);border-bottom:1.5px solid rgba(201,168,76,.5);transform:rotate(45deg);animation:bounce 1.5s infinite}
+    @keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(5px)}}
+
+    /* SHARED */
+    .section-wrap{max-width:960px;margin:0 auto;padding:5rem 1.5rem}
+    .sec-head{text-align:center;margin-bottom:3rem}
+    .sec-eyebrow{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+    .sec-title{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,40px);font-weight:700;color:var(--dark);line-height:1.2}
+
+    /* ABOUT */
+    #about{background:var(--white)}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .about-stat{background:var(--white);padding:2rem 1.5rem;text-align:center;transition:background .25s}
+    .about-stat:hover{background:#fafaf8}
+    .about-stat .num{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--navy);line-height:1;margin-bottom:6px}
+    .about-stat .num span{color:var(--gold)}
+    .about-stat .lbl{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+
+    /* EXPERIENCE */
+    #experience{background:var(--cream)}
+    .timeline{position:relative;padding-left:2rem}
+    .timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--gold),transparent)}
+    .tl-item{position:relative;margin-bottom:2rem;opacity:0;transform:translateX(-20px);transition:opacity .5s ease,transform .5s ease}
+    .tl-item.visible{opacity:1;transform:translateX(0)}
+    .tl-item:last-child{margin-bottom:0}
+    .tl-dot{position:absolute;left:-2.45rem;top:20px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--cream);box-shadow:0 0 0 3px rgba(201,168,76,.2)}
+    .tl-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.75rem;transition:transform .25s,box-shadow .25s,border-color .25s}
+    .tl-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.07);border-color:rgba(201,168,76,.25)}
+    .tl-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:4px;flex-wrap:wrap}
+    .tl-role{font-size:16px;font-weight:600;color:var(--dark)}
+    .tl-year{font-size:11px;font-weight:500;background:var(--navy);color:var(--goldb);border-radius:100px;padding:4px 12px;white-space:nowrap}
+    .tl-company{font-size:13px;color:var(--muted);margin-bottom:10px}
+    .tl-desc{font-size:14px;line-height:1.75;color:#4a5065}
+    .tl-tag{display:inline-block;margin-top:10px;font-size:11px;font-weight:500;background:rgba(201,168,76,.1);color:#7a5c0f;border-radius:6px;padding:3px 10px}
+
+    /* SKILLS */
+    #skills{background:var(--navy)}
+    #skills .sec-title{color:var(--white)}
+    #skills .sec-eyebrow{color:var(--goldb)}
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem}
+    .skill-card{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.12);border-radius:14px;padding:1.5rem 1rem;text-align:center;opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease,background .25s,border-color .25s}
+    .skill-card.visible{opacity:1;transform:translateY(0)}
+    .skill-card:hover{background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.35);transform:translateY(-4px) scale(1.03)}
+    .skill-icon{font-size:28px;margin-bottom:10px}
+    .skill-name{font-size:12.5px;font-weight:500;color:rgba(255,255,255,.8)}
+
+    /* EDUCATION */
+    #education{background:var(--cream)}
+    .edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
+    .edu-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease,box-shadow .25s}
+    .edu-card.visible{opacity:1;transform:translateY(0)}
+    .edu-card:hover{box-shadow:0 10px 30px rgba(0,0,0,.07)}
+    .edu-icon{width:44px;height:44px;border-radius:12px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .edu-school{font-size:14px;font-weight:600;color:var(--dark);margin-bottom:4px}
+    .edu-year{font-size:12px;color:var(--muted)}
+
+    /* CONTACT */
+    #contact{background:var(--white)}
+    .contact-box{background:var(--navy);border-radius:20px;padding:3.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+    .contact-box::before{content:'';position:absolute;top:-100px;right:-100px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);pointer-events:none}
+    .contact-box h3{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,36px);color:var(--white);margin-bottom:.75rem;position:relative}
+    .contact-box p{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:2rem;position:relative;line-height:1.7}
+    .contact-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;position:relative}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);border:none;border-radius:100px;padding:13px 28px;font-size:14px;font-weight:600;font-family:inherit;text-decoration:none;cursor:pointer;transition:background .2s,transform .2s}
+    .btn-primary:hover{background:var(--goldb);transform:translateY(-2px)}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:13px 28px;font-size:14px;font-weight:500;font-family:inherit;text-decoration:none;cursor:pointer;transition:all .2s}
+    .btn-outline:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.4);transform:translateY(-2px)}
+
+    footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.1);text-align:center;padding:1.5rem;font-size:12px;color:rgba(255,255,255,.25)}
+    footer b{color:var(--gold);font-weight:500}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    @media(max-width:640px){
+      .nav-links{display:none}
+      .nav-burger{display:flex}
+      .about-grid{grid-template-columns:1fr}
+      .timeline{padding-left:1.5rem}
+      .tl-dot{left:-1.95rem}
+      .skills-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:380px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about"      onclick="closeMobile()">Tentang</a>
+  <a href="#experience" onclick="closeMobile()">Pengalaman</a>
+  <a href="#skills"     onclick="closeMobile()">Keahlian</a>
+  <a href="#education"  onclick="closeMobile()">Pendidikan</a>
+  <a href="#contact"    onclick="closeMobile()">Kontak</a>
+</div>
+
+<nav id="navbar">
+  <div class="nav-logo">CV Handi</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">Tentang</a></li>
+    <li><a href="#experience">Pengalaman</a></li>
+    <li><a href="#skills">Keahlian</a></li>
+    <li><a href="#education">Pendidikan</a></li>
+    <li><a href="#contact">Kontak</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Curriculum Vitae</div>
+    <h1 class="hero-name">Handi Eka<br><span class="gold">Prasetya</span></h1>
+    <p class="hero-sub">Pernah menjadi: Konten Kreator &middot; Advertiser<br>Akhtara Residence, Kedamean &ndash; Gresik</p>
+    <div class="hero-contacts">
+      <a href="tel:085232204071">&#128222; 0852-3220-4071</a>
+      <a href="mailto:handiekaprasetya86@gmail.com">&#9993; handiekaprasetya86@gmail.com</a>
+      <a href="https://maps.google.com/?q=Kedamean+Gresik" target="_blank" rel="noopener">&#128205; Kedamean, Gresik</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-wrap">
+    <div class="sec-head">
+      <p class="sec-eyebrow">Ringkasan</p>
+      <h2 class="sec-title">Angka Bicara</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-stat"><div class="num">4<span>+</span></div><div class="lbl">Tahun Pengalaman</div></div>
+      <div class="about-stat"><div class="num">3</div><div class="lbl">Proyek Properti</div></div>
+      <div class="about-stat"><div class="num">1<span>+</span></div><div class="lbl">Closing / Bulan</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-wrap">
+    <div class="sec-head">
+      <p class="sec-eyebrow">Karir</p>
+      <h2 class="sec-title">Pengalaman Kerja</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-top"><span class="tl-role">Konten Kreator</span><span class="tl-year">2022 &ndash; 2023</span></div>
+          <p class="tl-company">PT Dzaka Rotsa Properti</p>
+          <p class="tl-desc">Mengelola akun media sosial official perusahaan secara penuh. Berhasil menghasilkan minimal <strong>1 closing per bulan</strong> secara konsisten tanpa iklan berbayar &mdash; murni dari konten organik.</p>
+          <span class="tl-tag">Organik &middot; Social Media</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-top"><span class="tl-role">Advertiser &mdash; Meta Ads</span><span class="tl-year">2024 &ndash; 2025</span></div>
+          <p class="tl-company">PT Dzaka Rotsa Properti</p>
+          <p class="tl-desc">Mengelola dan mengoptimasi kampanye Meta Ads untuk <strong>3 lokasi proyek</strong>: Akhtara Residence (Kedamean), Castila Garden (Caruban), dan Castila Village (Jombang).</p>
+          <span class="tl-tag">Meta Ads &middot; 3 Lokasi</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-top"><span class="tl-role">Konten Kreator</span><span class="tl-year">2026 &ndash; Sekarang</span></div>
+          <p class="tl-company">PT Dzaka Rotsa Properti</p>
+          <p class="tl-desc">Kembali mengelola akun media sosial official. Konsisten menghasilkan minimal <strong>1 closing per bulan</strong> hanya dengan konten organik tanpa iklan berbayar.</p>
+          <span class="tl-tag">Aktif &middot; Organik</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-wrap">
+    <div class="sec-head">
+      <p class="sec-eyebrow">Kemampuan</p>
+      <h2 class="sec-title">Keahlian</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="skill-icon">&#128227;</div><div class="skill-name">Meta Ads</div></div>
+      <div class="skill-card"><div class="skill-icon">&#128187;</div><div class="skill-name">Web Dev</div></div>
+      <div class="skill-card"><div class="skill-icon">&#129302;</div><div class="skill-name">CS AI</div></div>
+      <div class="skill-card"><div class="skill-icon">&#9889;</div><div class="skill-name">Automation</div></div>
+      <div class="skill-card"><div class="skill-icon">&#128202;</div><div class="skill-name">CRM</div></div>
+      <div class="skill-card"><div class="skill-icon">&#128396;</div><div class="skill-name">Landing Page</div></div>
+      <div class="skill-card"><div class="skill-icon">&#128196;</div><div class="skill-name">Word</div></div>
+      <div class="skill-card"><div class="skill-icon">&#128200;</div><div class="skill-name">Excel</div></div>
+      <div class="skill-card"><div class="skill-icon">&#127916;</div><div class="skill-name">PowerPoint</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-wrap">
+    <div class="sec-head">
+      <p class="sec-eyebrow">Riwayat</p>
+      <h2 class="sec-title">Pendidikan</h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card"><div class="edu-icon">&#127979;</div><div><div class="edu-school">SDN Bringinbendo II</div><div class="edu-year">Lulus 2016</div></div></div>
+      <div class="edu-card"><div class="edu-icon">&#127979;</div><div><div class="edu-school">SMP YPM 5 Driyorejo</div><div class="edu-year">Lulus 2019</div></div></div>
+      <div class="edu-card"><div class="edu-icon">&#127891;</div><div><div class="edu-school">SMK Al-Masyhudiyah Driyorejo</div><div class="edu-year">Lulus 2022</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-wrap">
+    <div class="contact-box">
+      <h3>Mari Bekerja Sama</h3>
+      <p>Semoga curriculum vitae ini membantu saya dan anda untuk berkolaborasi dikemudian hari,<br>dibawah ini adalah contact saya.</p>
+      <div class="contact-btns">
+        <a href="https://wa.me/6285232204071" class="btn-primary" target="_blank" rel="noopener">&#128172; WhatsApp</a>
+        <a href="mailto:handiekaprasetya86@gmail.com" class="btn-outline">&#9993; Kirim Email</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>&copy; 2026 <b>Handi Eka Prasetya</b> &middot; Kedamean, Gresik</footer>
+
+<script>
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  if(cur){
+    document.addEventListener('mousemove',e=>{
+      cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+      ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';
+    });
+  }
+  const navbar=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+  const burger=document.getElementById('burger'),mobileMenu=document.getElementById('mobileMenu');
+  function toggleMobile(){const o=mobileMenu.classList.toggle('open');burger.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';}
+  function closeMobile(){mobileMenu.classList.remove('open');burger.classList.remove('open');document.body.style.overflow='';}
+  const reveals=document.querySelectorAll('.tl-item,.skill-card,.edu-card');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const parent=entry.target.parentElement;
+        const idx=Array.from(parent.children).indexOf(entry.target);
+        const delay=(parent.classList.contains('skills-grid')||parent.classList.contains('edu-grid'))?idx*80:0;
+        setTimeout(()=>entry.target.classList.add('visible'),delay);
+        obs.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.12});
+  reveals.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
